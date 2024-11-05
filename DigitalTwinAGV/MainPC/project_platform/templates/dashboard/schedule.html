@@ -14,27 +14,21 @@
                 <th scope="col">Job</th>
                 <th scope="col">Arrival</th>
                 <th scope="col">Due</th>
-                <th scope="col">Picked At</th>
-                <th scope="col">Placed At</th>
-                <th scope="col">Estimated</th>
-                <th scope="col">Actual</th>
-                <th scope="col">Delay</th>
-                <th scope="col">On-Time</th>
+                <th scope="col">Pick At</th>
+                <th scope="col">Place At</th>
+                <th scope="col">Estimated Pickup time</th>
             </tr>
         </thead>
         <tbody>
-            {% for job in jobs %}
+            {% for coming_jobs in coming_jobs %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ job.job_name }}</td>
-                <td>{{ job.arrival }}</td>
-                <td>{{ job.due }}</td>
-                <td>{{ job.picked_at }}</td>
-                <td>{{ job.placed_at }}</td>
-                <td>{{ job.estimated_time }}</td>
-                <td>{{ job.actual_time }}</td>
-                <td>{{ job.delay }}</td>
-                <td>{{ job.on_time }}</td>
+                <td>{{ coming_jobs.job_name }}</td>
+                <td>{{ coming_jobs.arrival }}</td>
+                <td>{{ coming_jobs.due }}</td>
+                <td>{{ coming_jobs.pick_at }}</td>
+                <td>{{ coming_jobs.place_at }}</td>
+                <td>{{ coming_jobs.estimated_pickup_time }}</td>
             </tr>
             {% endfor %}
         </tbody>

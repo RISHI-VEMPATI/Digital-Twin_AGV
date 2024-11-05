@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import JobHistory
+from .models import JobHistory, Schedule
 import random
 
 # Create your views here.
@@ -12,6 +12,7 @@ def history(request):
     jobs = JobHistory.objects.all()
     return render(request, 'dashboard/history.html', {'jobs': jobs})
 
-def future(request):
-    return render(request, 'dashboard/future.html')
+def schedule(request):
+    coming_jobs = Schedule.objects.all()
+    return render(request, 'dashboard/schedule.html', {'coming_jobs': coming_jobs})
 

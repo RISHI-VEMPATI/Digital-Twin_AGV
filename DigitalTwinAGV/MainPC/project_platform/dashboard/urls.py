@@ -13,6 +13,7 @@ urlpatterns = [
     
     path('dashboard/', views.dashboard, name='dashboard'),
     path('history/', views.history, name='history'),
-    path('future/', views.future, name='future'),
+    path('schedule/', views.schedule, name='schedule'),
 
-] 
+]
+
