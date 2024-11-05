@@ -1,0 +1,41 @@
+{%extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">History</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Job</th>
+                <th scope="col">Arrival</th>
+                <th scope="col">Due</th>
+                <th scope="col">Picked At</th>
+                <th scope="col">Placed At</th>
+                <th scope="col">Estimated</th>
+                <th scope="col">Actual</th>
+                <th scope="col">Delay</th>
+                <th scope="col">On-Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ job.job_name }}</td>
+                <td>{{ job.arrival }}</td>
+                <td>{{ job.due }}</td>
+                <td>{{ job.picked_at }}</td>
+                <td>{{ job.placed_at }}</td>
+                <td>{{ job.estimated_time }}</td>
+                <td>{{ job.actual_time }}</td>
+                <td>{{ job.delay }}</td>
+                <td>{{ job.on_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock content %}
