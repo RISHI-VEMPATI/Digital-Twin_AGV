@@ -16,3 +16,7 @@ def schedule(request):
     coming_jobs = Schedule.objects.all()
     return render(request, 'dashboard/schedule.html', {'coming_jobs': coming_jobs})
 
+def about(request):
+    
+    return render(request, 'dashboard/about.html')
+
