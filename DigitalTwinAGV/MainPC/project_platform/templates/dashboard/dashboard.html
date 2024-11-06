@@ -1,57 +1,12 @@
 {%extends 'base.html' %}
+{% load static %}
 {% block head %}
-<style>
-    /* Basic styling */
-    body { font-family: Arial, sans-serif; }
-    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-    .navbar { display: flex; justify-content: flex-start; align-items: start; }
-    .navbar a { margin-right: 15px; text-decoration: none; color: black; }
-    .status-button { background-color: green; border: none; color: white; padding: 10px; border-radius: 50%; }
-    .status-button.offline { background-color: red; }
-    .map-container { border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
-    .location-updates { display: flex; justify-content: space-between; }
-    .location-updates div { flex: 1; text-align: center; }
-    .info-box { padding: 10px; border: 1px solid #ccc; margin-top: 10px; }
-    .a {margin:10px;}
-        .map-container { 
-            margin: 20px auto;
-            width: 90%; 
-            max-width: 600px;
-            position: relative;
-            padding: 20px;
-            text-align: center;
-        }
 
-        /* Line representing the AGV path */
-        .line {
-            height: 4px;
-            background-color: #333;
-            position: relative;
-            margin: 40px 0;
-        }
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
 
-        /* Points A, B, C, D, E */
-        .point {
-            position: relative;
-            transform: translateX(-50%);
-            top: -20px;
-            color: #333;
-        }
-
-        /* AGV marker */
-        .agv-marker {
-            width: 20px;
-            height: 20px;
-            background-color: blue;
-            border-radius: 50%;
-            position: absolute;
-            top: -10px;
-            transform: translateX(-50%);
-            transition: left 0.5s ease;
-        }
-</style>
 {% endblock head %}
 {% block content %}
+
 <div class="container-fluid">
     <!-- Navigation bar -->
     <div class="navbar">
@@ -117,7 +72,6 @@
     }, 2000);  // Update every 2 seconds
 </script>
 
-</body>
-</html>
+
 
 {% endblock content %}
