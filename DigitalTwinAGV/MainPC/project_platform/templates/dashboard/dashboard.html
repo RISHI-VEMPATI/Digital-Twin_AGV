@@ -1,44 +1,65 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block head %}
-
 <link rel="stylesheet" href="{% static 'dashboard.css' %}">
-
 {% endblock head %}
 {% block content %}
 
 <div class="container-fluid">
     <!-- Navigation bar -->
-    <div class="navbar">
-        <a href="#">current Pickup</a>
-        <a href="/history">History</a>
-        <a href="#">About</a>
-        <a href="#">Speed</a>
-        <button class="status-button" onclick="toggleStatus()">Online</button>
+        <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <div class="navbar-nav">
+                    <a class="nav-link curent_position" href="#">Current Pickup</a>
+                    <a class="nav-link" href="#">History</a>
+                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="#">Speed</a>
+                    <p class="nav-link" >Delayed by: <span id="delay-time">0 mins</span></p>
+                <a class="nav-link" href="/schedule">Schedule</a>
+                </div>
+                <div class="status-indicator">
+                    Online
+                </div>
+            </div>
+        </nav>
+ 
+    <div class="container-fluid">
+        <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+            <div class="delay-info navbar-nav container-fluid">
+                
+            </div>
+            </div>
+        </nav>
     </div>
 
     <!-- Delay Info -->
-    <div class="delay-info navbar">
-        <p>Delayed by: <span id="delay-time">0 mins</span></p>
-        <a href="/schedule">Schedule</a>
-    </div>
+
 
     <!-- Map and Location Updates -->
-    <div class="map-container">
-        <h3>AGV Position on Path</h3>
-        <!-- Line for AGV path -->
-        <div class="line" style="width: 100%;"></div>
-    
-        <!-- Markers for A, B, C, D, E -->
-        <div class="point" style="left: 5%;">A</div>
-        <div class="point" style="left: 25%;">B</div>
-        <div class="point" style="left: 50%;">C</div>
-        <div class="point" style="left: 75%;">D</div>
-        <div class="point" style="left: 95%;">E</div>
-    
-        <!-- AGV Marker -->
-        <div id="agv" class="agv-marker" style="left: {{ agv_position }}%;"></div>
+    <div class="container-fluid map-containerp">
+        <div class="map-container">
+            <h3>AGV Position on Path</h3>
+            <!-- Line for AGV path -->
+            <div class="line" style="width: 100%;"></div>
+        
+            <!-- Markers for A, B, C, D, E -->
+            <div class="point" style="left: 5%;">A</div>
+            <div class="point" style="left: 25%;">B</div>
+            <div class="point" style="left: 50%;">C</div>
+            <div class="point" style="left: 75%;">D</div>
+            <div class="point" style="left: 95%;">E</div>
+        
+            <!-- AGV Marker -->
+            <div id="agv" class="agv-marker" style="left: {{ agv_position }}%;"></div>
+        </div>
+        <div class="logger">
+            <h3>Logger</h3>
+        </div>
     </div>
+    
 
     <!-- Tasks Completed Info -->
     <div class="info-box">

@@ -1,22 +1,28 @@
-    /* Basic styling */
-    body { 
+     body { 
         font-family: Arial, sans-serif; 
     }
-    .container { 
-        max-width: 800px; 
+
+    .container-fluid { 
+        max-width: 100%; 
         margin: 0 auto; 
-        padding: 20px; 
+        padding: 0px; 
     }
     .navbar { 
         display: flex; 
-        justify-content: flex-start; 
+        justify-content: space-evenly; 
         align-items: start; 
+        width: 100%;
     }
     .navbar a {
          margin-right: 15px; 
          text-decoration: none; 
-         color: black; 
-        }
+         color: white; 
+    }
+    .navbar p {
+        margin-right: 15px; 
+        text-decoration: none; 
+        color: white; 
+    }
     .status-button { 
         background-color: green; 
         border: none; 
@@ -29,8 +35,11 @@
     }
     .map-container { 
         border: 1px solid #ccc;
-         padding: 20px; 
-         margin-top: 20px; }
+        padding: 20px; 
+        margin-top: 0px;
+
+
+     }
 
     .location-updates { 
         display: flex; 
@@ -49,15 +58,29 @@
         margin:10px;
     }
     .map-container { 
-        margin: 20px auto;
-        width: 90%; 
+        margin-right: 20px;
+        margin-left: 0px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 50%; 
         max-width: 600px;
         position: relative;
         padding: 20px;
         text-align: center;
     }
 
-        /* Line representing the AGV path */
+    .logger{
+        margin-right: 20px;
+        margin-left: 0px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 50%; 
+        max-width: 600px;
+        position: relative;
+        padding: 20px;
+        text-align: center;
+    }
+
     .line {
         height: 4px;
         background-color: #333;
@@ -65,7 +88,7 @@
         margin: 40px 0;
     }
 
-        /* Points A, B, C, D, E */
+
     .point {
         position: relative;
         transform: translateX(-50%);
@@ -73,7 +96,28 @@
         color: #333;
     }
 
-        /* AGV marker */
+    .status-indicator {
+        width: 60px;
+        height: 30px;
+        background-color: green;
+        color: white;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .navbar-nav .nav-link {
+        margin-right: 15px;
+        font-size: 1.1em;
+    }
+
+    div.container-fluid.map-containerp{
+        display: flex;
+        justify-content: space-evenly;
+    }
+
     .agv-marker {
         width: 20px;
         height: 20px;
@@ -83,4 +127,11 @@
         top: -10px;
         transform: translateX(-50%);
         transition: left 0.5s ease;
-    }
+    }  
+a.nav-link.curent_position{
+    background-color: red ; 
+    color: white !important;
+    padding: 10px;
+    border-radius: 20px;
+}
+
