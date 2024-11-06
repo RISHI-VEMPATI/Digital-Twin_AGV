@@ -1,123 +1,151 @@
-{%extends 'base.html' %}
-{% block head %}
-<style>
-    /* Basic styling */
-    body { font-family: Arial, sans-serif; }
-    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-    .navbar { display: flex; justify-content: flex-start; align-items: start; }
-    .navbar a { margin-right: 15px; text-decoration: none; color: black; }
-    .status-button { background-color: green; border: none; color: white; padding: 10px; border-radius: 50%; }
-    .status-button.offline { background-color: red; }
-    .map-container { border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
-    .location-updates { display: flex; justify-content: space-between; }
-    .location-updates div { flex: 1; text-align: center; }
-    .info-box { padding: 10px; border: 1px solid #ccc; margin-top: 10px; }
-    .a {margin:10px;}
-        .map-container { 
-            margin: 20px auto;
-            width: 90%; 
-            max-width: 600px;
-            position: relative;
-            padding: 20px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard with Paths</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        .card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .status-card, .info-card {
+            border-radius: 10px;
+            padding: 10px;
             text-align: center;
+            font-weight: bold;
         }
-
-        /* Line representing the AGV path */
-        .line {
-            height: 4px;
-            background-color: #333;
-            position: relative;
-            margin: 40px 0;
-        }
-
-        /* Points A, B, C, D, E */
-        .point {
-            position: relative;
-            transform: translateX(-50%);
-            top: -20px;
-            color: #333;
-        }
-
-        /* AGV marker */
-        .agv-marker {
-            width: 20px;
-            height: 20px;
-            background-color: blue;
+        .status-indicator {
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .at-work { background-color: red; }
+        .free { background-color: green; }
+        .map-container {
+            position: relative;
+            border: 2px solid #ddd;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+        .station {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+            position: relative;
+        }
+        /* Lines for paths */
+        .path {
             position: absolute;
-            top: -10px;
-            transform: translateX(-50%);
-            transition: left 0.5s ease;
+            background-color: #333;
+            transform-origin: top left;
         }
-</style>
-{% endblock head %}
-{% block content %}
-<div class="container-fluid">
-    <!-- Navigation bar -->
-    <div class="navbar">
-        <a href="#">current Pickup</a>
-        <a href="/history">History</a>
-        <a href="#">About</a>
-        <a href="#">Speed</a>
-        <button class="status-button" onclick="toggleStatus()">Online</button>
-    </div>
-
-    <!-- Delay Info -->
-    <div class="delay-info navbar">
-        <p>Delayed by: <span id="delay-time">0 mins</span></p>
-        <a href="/schedule">Schedule</a>
-    </div>
-
-    <!-- Map and Location Updates -->
-    <div class="map-container">
-        <h3>AGV Position on Path</h3>
-        <!-- Line for AGV path -->
-        <div class="line" style="width: 100%;"></div>
-    
-        <!-- Markers for A, B, C, D, E -->
-        <div class="point" style="left: 5%;">A</div>
-        <div class="point" style="left: 25%;">B</div>
-        <div class="point" style="left: 50%;">C</div>
-        <div class="point" style="left: 75%;">D</div>
-        <div class="point" style="left: 95%;">E</div>
-    
-        <!-- AGV Marker -->
-        <div id="agv" class="agv-marker" style="left: {{ agv_position }}%;"></div>
-    </div>
-
-    <!-- Tasks Completed Info -->
-    <div class="info-box">
-        <p>Number of tasks completed in the last 15 mins: <span id="tasks-completed">0</span></p>
-    </div>
-</div>
-
-<script>
-    // Toggle status button between online and offline
-    function toggleStatus() {
-        const statusButton = document.querySelector('.status-button');
-        if (statusButton.classList.contains('offline')) {
-            statusButton.classList.remove('offline');
-            statusButton.textContent = 'Online';
-        } else {
-            statusButton.classList.add('offline');
-            statusButton.textContent = 'Offline';
+        .horizontal-path {
+            height: 2px;
+            width: 150px;
         }
-    }
-        // Update AGV position (simulated example)
-    function updateAGVPosition(position) {
-        const agvMarker = document.getElementById('agv');
-        agvMarker.style.left = position + '%';
-    }
-    
-        // Simulate AGV movement (in a real application, use WebSockets or AJAX to update)
-    let currentPosition = {{ agv_position }};
-    setInterval(() => {
-        currentPosition = (currentPosition + 5) % 100;  // Simulate movement
-        updateAGVPosition(currentPosition);
-    }, 2000);  // Update every 2 seconds
-</script>
+        .vertical-path {
+            width: 2px;
+            height: 120px;
+        }
+        .diagonal-path {
+            height: 2px;
+            width: 180px;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-4">
+        <!-- Top Info Section -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="card info-card">
+                    <div>Current Pick-Up</div>
+                    <div class="text-muted">[Details]</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card info-card">
+                    <div>Heading Towards</div>
+                    <div class="text-muted">[Destination]</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">History</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">Schedule</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">About</button>
+            </div>
+        </div>
 
+        <!-- Task Status Section -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="card info-card">
+                    <div>Speed</div>
+                    <div class="text-muted">[Value]</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary w-100">No. of Tasks Completed</button>
+            </div>
+            <div class="col-md-3">
+                <div class="card status-card">
+                    <span class="status-indicator at-work"></span> At Work
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card status-card">
+                    <span class="status-indicator free"></span> Free
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section with Stations and Paths -->
+        <div class="map-container">
+            <!-- Station S -->
+            <div class="station" style="top: 20px; left: 50%;">S</div>
+
+            <!-- Stations A, C, E, P along with paths -->
+            <div class="station" style="top: 100px; left: 20%;">A</div>
+            <div class="station" style="top: 100px; left: 50%;">C</div>
+            <div class="station" style="top: 100px; left: 80%;">E</div>
+            <div class="station" style="top: 180px; left: 95%;">P</div>
+
+            <!-- Horizontal paths -->
+            <div class="path horizontal-path" style="top: 125px; left: 22%;"></div> <!-- A to C -->
+            <div class="path horizontal-path" style="top: 125px; left: 52%;"></div> <!-- C to E -->
+
+            <!-- Vertical path S to C -->
+            <div class="path vertical-path" style="top: 40px; left: 50%;"></div>
+
+            <!-- Stations B, D, and paths -->
+            <div class="station" style="top: 220px; left: 40%;">B</div>
+            <div class="station" style="top: 220px; left: 60%;">D</div>
+
+            <!-- Horizontal path B to D -->
+            <div class="path horizontal-path" style="top: 245px; left: 42%;"></div> <!-- B to D -->
+
+            <!-- Diagonal path from C to B -->
+            <div class="path diagonal-path" style="top: 125px; left: 50%;"></div> <!-- C to B -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-{% endblock content %}
