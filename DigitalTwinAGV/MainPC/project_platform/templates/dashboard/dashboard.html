@@ -1,59 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard with Paths</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom Styles */
-        .card {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border: none;
-        }
-        .status-card, .info-card {
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .status-indicator {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-        }
-        .at-work { background-color: red; }
-        .free { background-color: green; }
-        .map-container {
-            position: relative;
-            border: 2px solid #ddd;
-            padding: 40px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
-            background-color: #f8f9fa;
-        }
-        .station {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: inline-block;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-            background-color: #e9ecef;
-            position: relative;
-        }
-        /* Lines for paths */
-        .path {
-            position: absolute;
-            background-color: #333;
-            transform-origin: top left;
-        }
-        .horizontal-path {
-            height: 2px;
-            width: 150px;
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'dashboard.css' %}">
+{% endblock head %}
+{% block content %}
+
+<div class="container-fluid">
+    <!-- Navigation bar -->
+        <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <div class="navbar-nav">
+                    <a class="nav-link curent_position" href="#">Current Pickup</a>
+                    <a class="nav-link" href="#">History</a>
+                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="#">Speed</a>
+                    <p class="nav-link" >Delayed by: <span id="delay-time">0 mins</span></p>
+                <a class="nav-link" href="/schedule">Schedule</a>
+                </div>
+                <div class="status-indicator">
+                    Online
+                </div>
+            </div>
+        </nav>
+ 
+    <div class="container-fluid">
+        <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+            <div class="delay-info navbar-nav container-fluid">
+                
+            </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Delay Info -->
+
+
+    <!-- Map and Location Updates -->
+    <div class="container-fluid map-containerp">
+        <div class="map-container">
+            <h3>AGV Position on Path</h3>
+            <!-- Line for AGV path -->
+            <div class="line" style="width: 100%;"></div>
+        
+            <!-- Markers for A, B, C, D, E -->
+            <div class="point" style="left: 5%;">A</div>
+            <div class="point" style="left: 25%;">B</div>
+            <div class="point" style="left: 50%;">C</div>
+            <div class="point" style="left: 75%;">D</div>
+            <div class="point" style="left: 95%;">E</div>
+        
+            <!-- AGV Marker -->
+            <div id="agv" class="agv-marker" style="left: {{ agv_position }}%;"></div>
+        </div>
+        <div class="logger">
+            <h3>Logger</h3>
+        </div>
+    </div>
+    
+
+    <!-- Tasks Completed Info -->
+    <div class="info-box">
+        <p>Number of tasks completed in the last 15 mins: <span id="tasks-completed">0</span></p>
+    </div>
+</div>
+
+<script>
+    // Toggle status button between online and offline
+    function toggleStatus() {
+        const statusButton = document.querySelector('.status-button');
+        if (statusButton.classList.contains('offline')) {
+            statusButton.classList.remove('offline');
+            statusButton.textContent = 'Online';
+        } else {
+            statusButton.classList.add('offline');
+            statusButton.textContent = 'Offline';
         }
         .vertical-path {
             width: 2px;
@@ -93,59 +116,6 @@
             </div>
         </div>
 
-        <!-- Task Status Section -->
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <div class="card info-card">
-                    <div>Speed</div>
-                    <div class="text-muted">[Value]</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-primary w-100">No. of Tasks Completed</button>
-            </div>
-            <div class="col-md-3">
-                <div class="card status-card">
-                    <span class="status-indicator at-work"></span> At Work
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card status-card">
-                    <span class="status-indicator free"></span> Free
-                </div>
-            </div>
-        </div>
 
-        <!-- Map Section with Stations and Paths -->
-        <div class="map-container">
-            <!-- Station S -->
-            <div class="station" style="top: 20px; left: 50%;">S</div>
 
-            <!-- Stations A, C, E, P along with paths -->
-            <div class="station" style="top: 100px; left: 20%;">A</div>
-            <div class="station" style="top: 100px; left: 50%;">C</div>
-            <div class="station" style="top: 100px; left: 80%;">E</div>
-            <div class="station" style="top: 180px; left: 95%;">P</div>
-
-            <!-- Horizontal paths -->
-            <div class="path horizontal-path" style="top: 125px; left: 22%;"></div> <!-- A to C -->
-            <div class="path horizontal-path" style="top: 125px; left: 52%;"></div> <!-- C to E -->
-
-            <!-- Vertical path S to C -->
-            <div class="path vertical-path" style="top: 40px; left: 50%;"></div>
-
-            <!-- Stations B, D, and paths -->
-            <div class="station" style="top: 220px; left: 40%;">B</div>
-            <div class="station" style="top: 220px; left: 60%;">D</div>
-
-            <!-- Horizontal path B to D -->
-            <div class="path horizontal-path" style="top: 245px; left: 42%;"></div> <!-- B to D -->
-
-            <!-- Diagonal path from C to B -->
-            <div class="path diagonal-path" style="top: 125px; left: 50%;"></div> <!-- C to B -->
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock content %}
