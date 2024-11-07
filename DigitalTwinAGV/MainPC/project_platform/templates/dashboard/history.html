@@ -5,7 +5,17 @@
 {% bootstrap_javascript %}
 {% endblock head%}
 {% block content %}
+
 <div class="container-fluid my-5">
+    <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/dashboard" >DashBoard</a>
+                <a class="nav-link" href="/schedule" >Schedule</a>
+                <a class="nav-link" href="/history" >History</a>
+            </div>
+        </div>
+    </nav>
     <h2 class="text-center mb-4">History</h2>
     <table class="table table-bordered table-striped">
         <thead class="table-primary">

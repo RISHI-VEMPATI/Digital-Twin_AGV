@@ -12,4 +12,4 @@ def start_client(ip_address, port):
             print(f"Client received Job: {job_data.decode('utf-8')}")
 
 # Start the client
-start_client("10.14.1.147", 3083)  # Replace with the server's IP address and port
+start_client("10.14.6.242", 3083)  # Replace with the server's IP address and port

@@ -6,7 +6,16 @@
 {% endblock head%}
 {% block content %}
 <div class="container-fluid my-5">
-    <h2 class="text-center mb-4">History</h2>
+    <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/dashboard" >DashBoard</a>
+                <a class="nav-link" href="/schedule" >Schedule</a>
+                <a class="nav-link" href="/history" >History</a>
+            </div>
+        </div>
+    </nav>
+    <h2 class="text-center mb-4">Schedule</h2>
     <table class="table table-bordered table-striped">
         <thead class="table-primary">
             <tr>
@@ -19,7 +28,7 @@
                 <th scope="col">Estimated Pickup time</th>
             </tr>
         </thead>
-        <tbody>
+        {% comment %} <tbody>
             {% for coming_jobs in coming_jobs %}
             <tr>
                 <td>{{ forloop.counter }}</td>
@@ -31,7 +40,45 @@
                 <td>{{ coming_jobs.estimated_pickup_time }}</td>
             </tr>
             {% endfor %}
-        </tbody>
+        </tbody> {% endcomment %}
+
+        <script>
+            const socket = new WebSocket('ws://' + window.location.host + '/ws/job_updates/');
+        
+            socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                if (data.type === 'job_update') {
+                    const tableBody = document.querySelector('table tbody');
+                    tableBody.innerHTML = '';  // Clear the current table
+        
+                    data.jobs.forEach((job, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${job.job_name}</td>
+                            <td>${job.arrival}</td>
+                            <td>${job.due}</td>
+                            <td>${job.pick_at}</td>
+                            <td>${job.place_at}</td>
+                            <td>${job.estimated_pickup_time}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            };
+        
+            socket.onclose = function(e) {
+                console.error('Socket closed unexpectedly');
+            };
+        </script>
+        
+        {% comment %} <script>
+
+            setInterval(function(){
+                window.location.reload();
+            }, 1000);
+        </script> {% endcomment %}
+
     </table>
 </div>
 

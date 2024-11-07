@@ -1,0 +1,25 @@
+{%extends 'base.html' %}
+{% block head%}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<head>
+    <meta charset="UTF-8">
+    <title>About the AGV</title>
+</head>
+{% endblock head%}
+{% block content %}
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="navbar-nav">
+            <a class="nav-link" href="/dashboard" >DashBoard</a>
+            <a class="nav-link" href="/schedule" >Schedule</a>
+            <a class="nav-link" href="/history" >History</a>
+        </div>
+    </div>
+</nav>
+<body>
+    <h1>JSON Data</h1>
+    <pre>{{ json_data }}</pre>  <!-- Display JSON in a readable format -->
+</body>
+{% endblock content %}

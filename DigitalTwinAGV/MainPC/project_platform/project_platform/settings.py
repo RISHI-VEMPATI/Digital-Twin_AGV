@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users',
     'dashboard',
     'bootstrap5',
+    'channels',
     
     
 ]
@@ -73,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project_platform.wsgi.application'
-
+ASGI_APPLICATION = 'project_platform.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -131,5 +132,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6329)],
+        },
+    },
+}
 

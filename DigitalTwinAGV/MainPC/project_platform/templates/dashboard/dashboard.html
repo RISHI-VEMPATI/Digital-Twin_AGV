@@ -14,11 +14,11 @@
             <div class="container-fluid">
                 <div class="navbar-nav">
                     <a class="nav-link curent_position" href="#">Current Pickup</a>
-                    <a class="nav-link" href="#">History</a>
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" target="_blank" rel="noopener noreferrer" href="/history">History</a>
+                    <a class="nav-link" target="_blank" rel="noopener noreferrer" href="/about">About</a>
                     <a class="nav-link" href="#">Speed</a>
                     <p class="nav-link" >Delayed by: <span id="delay-time">0 mins</span></p>
-                <a class="nav-link" href="/schedule">Schedule</a>
+                <a class="nav-link" target="_blank" rel="noopener noreferrer" href="/schedule">Schedule</a>
                 </div>
                 <div class="status-indicator">
                     Online
@@ -26,14 +26,14 @@
             </div>
         </nav>
  
-    <div class="container-fluid">
+    {% comment %} <div class="container-fluid">
         <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary">
             <div class="delay-info navbar-nav container-fluid">
                 
             </div>
             </div>
         </nav>
-    </div>
+    </div> {% endcomment %}
 
     <!-- Delay Info -->
 
@@ -87,35 +87,7 @@
             width: 180px;
             transform: rotate(45deg);
         }
-    </style>
-</head>
-<body>
-    <div class="container my-4">
-        <!-- Top Info Section -->
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <div class="card info-card">
-                    <div>Current Pick-Up</div>
-                    <div class="text-muted">[Details]</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card info-card">
-                    <div>Heading Towards</div>
-                    <div class="text-muted">[Destination]</div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100">History</button>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100">Schedule</button>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100">About</button>
-            </div>
-        </div>
-
+    </script>    
 
 
 {% endblock content %}
